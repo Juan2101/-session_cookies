@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="stylesheets/style.css">
+  <title>session</title>
+</head>
+<% if (locals.user) { %>
+  <style>
+    :root{
+      --color: <%= user.background %>
+    }
+  
+    body{
+      background-color: var(--color);
+    }
+  </style>
+<% } %>
+<body>
+  <div class="conteiner">
+    <% if (locals.user && user) { %>
+      <div class="user">
+        <p>Hola <%= user.name %></p>
+        <p>Elegiste el color: <%= user.color %></p>
+        <p>Tu email es: <%= user.email %></p>
+        <p>Tu edad es: <%= user.age %></p>
+        <a href="/thanks">
+            <button type="submit">Seguir</button>
+        </a>
+    </div>
+    <% } else { %>
+      <form action="/" method="POST">
+        <div>
+          <label for="name">Ingrese su nombre:</label><br>
+          <input type="text" name="name" placeholder="Nombre" value="<%= locals.old && old.name ? old.name : null%>"><br>
+          <% if (locals.errors) { %>
+            <% errors.forEach(error => { %>
+              <span><%- error.param === "name" ? error.msg : null%></span>   
+            <% }) %>
+          <% } %>
+        </div>
+        <div>
+          <label for="email">Ingrese su email:</label><br>
+          <input type="text" name="email" placeholder="Email" value="<%= locals.old && old.email ? old.email : null%>"><br>
+          <% if (locals.errors) { %>
+            <% errors.forEach(error => { %>
+              <span><%- error.param === "email" ? error.msg : null%></span>   
+            <% }) %>
+          <% } %>
+        </div>
+        <div class="colores">
+          <label for="color">Ingrese un color:</label><br>
+          <select name="color">
+            <% if (!(locals.old && old.color)) { %>
+              <option value="">Colores</option>
+            <% } %>
+            <option value="Rojo" <%= locals.old && old.color === "Rojo" ? "selected" : null%> >Rojo</option>
+            <option value="Azul" <%= locals.old && old.color === "Azul" ? "selected" : null%>>Azul</option>
+            <option value="Verde" <%= locals.old && old.color === "Verde" ? "selected" : null%>>Verde</option>
+            <option value="Rosa" <%= locals.old && old.color === "Rosa" ? "selected" : null%>>Rosa</option>
+            <option value="Amarillo" <%= locals.old && old.color === "Amarillo" ? "selected" : null%>>Amarillo</option>
+          </select><br>
+          <% if (locals.errors) { %>
+            <% errors.forEach(error => { %>
+              <span><%- error.param === "color" ? error.msg : null%></span>   
+            <% }) %>
+          <% } %>
+        </div>
+        <div>
+          <label for="age">Ingrese su edad:</label><br>
+          <input type="text" name="age" placeholder="Edad" value="<%= locals.old && old.age ? old.age : null%>"><br>
+          <% if (locals.errors) { %>
+            <% errors.forEach(error => { %>
+              <span><%- error.param === "age" ? error.msg : null%></span>   
+            <% }) %>
+          <% } %>
+        </div>
+        <div class="recordar">
+          <input type="checkbox" name="remenber" id="remenber" class="check">
+          <label for="remenber">Recordame</label>
+        </div>
+        <div class="boton">
+          <button type="submit">Enviar</button>
+        </div>
+      </form>
+    <% } %>
+  </div>
+</body>
+</html>
